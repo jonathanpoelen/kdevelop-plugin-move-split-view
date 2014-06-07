@@ -3,7 +3,7 @@ kdevelop-plugin-view-switcher
 
 To switch between the views of KDevelop (file splitter)
 
-INSTALL
+Install
 -------
 
 ### KdevPlatform 14 (Kdevelop 4.4)
@@ -33,7 +33,7 @@ or
 ```sh
 mkdir build
 cd build
-cd cmake .. -DCMAKE_INSTALL_PREFIX=$(kde4-config --localprefix)
+cmake .. -DCMAKE_INSTALL_PREFIX=$(kde4-config --localprefix)
 make
 make install
 ```
