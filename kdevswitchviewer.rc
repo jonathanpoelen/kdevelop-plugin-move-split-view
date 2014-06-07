@@ -1,0 +1,22 @@
+<!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
+<kpartgui name="kdevswitchviewer" version="6">
+<MenuBar>
+	<Menu name="editor">
+		<text context="@title:menu">Editor</text>
+		<Menu name="view">
+			<text context="@title:menu">View</text>
+			<separator />
+			<Action name="previous_view_area" />
+			<Action name="next_view_area" />
+			<Action name="move_previous_view_area" />
+			<Action name="move_next_view_area" />
+			<Action name="copy_previous_view_area" />
+			<Action name="copy_next_view_area" />
+			<separator />
+			<Action name="clean_view_area" />
+			<Action name="clean_all_view_area" />
+			<separator />
+		</Menu>
+	</Menu>
+</MenuBar>
+</kpartgui>
