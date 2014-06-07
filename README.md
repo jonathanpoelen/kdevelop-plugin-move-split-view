@@ -1,7 +1,20 @@
 kdevelop-plugin-view-switcher
 =============================
 
-To switch between the views of KDevelop (file splitter)
+To switch between the views of KDevelop (file splitter).
+
+The transition from one view to another is done in a loop, view the following is the first and last one before the first one is the last.
+
+Features
+--------
+
+ - Go to the next view
+ - Go to previous view
+ - Move the current file in the following view
+ - Move the current file in the previous view
+ - Delete the views already present in other groups
+ - Delete the views found in other groups
+ - Moving a file from one view to the other. Split if it is not already.
 
 Install
 -------
