@@ -8,11 +8,15 @@ INSTALL
 
 ### KdevPlatform 14 (Kdevelop 4.4)
 
+```sh
 sed -i 's/X\-KDevelop\-Version=[0-9][0-9]/X-KDevelop-Version=14/' kdevswitchviewer.desktop
+```
 
 ### KdevPlatform 15 (Kdevelop 4.5)
 
+```sh
 sed -i 's/X\-KDevelop\-Version=[0-9][0-9]/X-KDevelop-Version=15/' kdevswitchviewer.desktop
+```
 
 ### All versions
 
