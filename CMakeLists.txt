@@ -1,4 +1,4 @@
-project(switchviewer)
+project(movesplitview)
 
 # set(KDE_MIN_VERSION "4.5.0")
 # find_package(KDE4 4.5.0 REQUIRED)
@@ -23,15 +23,16 @@ find_package(KDevPlatform REQUIRED)
 
 include_directories(${KDEVPLATFORM_INCLUDE_DIR} ${QT_INCLUDE_DIR} ${KDE4_INCLUDES})
 
-add_definitions (${QT_DEFINITIONS} ${KDE4_DEFINITIONS} -DHAVE_CONFIG_H=1)
+add_definitions(${QT_DEFINITIONS} ${KDE4_DEFINITIONS} -DHAVE_CONFIG_H=1)
+add_definitions(-std=c++11)
 
 ########### install target ###############
 
-set(kdevswitchviewer_PART_SRCS switchviewerplugin.cpp)
+set(kdevmovesplitview_PART_SRCS movesplitviewplugin.cpp)
 
-kde4_add_plugin(kdevswitchviewer ${kdevswitchviewer_PART_SRCS})
+kde4_add_plugin(kdevmovesplitview ${kdevmovesplitview_PART_SRCS})
 
-target_link_libraries(kdevswitchviewer
+target_link_libraries(kdevmovesplitview
 	${KDE4_KDECORE_LIBS}
 	${KDE4_KDEUI_LIBS}
 	${KDE4_KPARTS_LIBS}
@@ -44,10 +45,10 @@ target_link_libraries(kdevswitchviewer
 )
 
 
-install(TARGETS kdevswitchviewer DESTINATION ${PLUGIN_INSTALL_DIR} )
+install(TARGETS kdevmovesplitview DESTINATION ${PLUGIN_INSTALL_DIR} )
 
 
 ########### install files ###############
 
-install( FILES kdevswitchviewer.desktop DESTINATION ${SERVICES_INSTALL_DIR} )
-install( FILES kdevswitchviewer.rc DESTINATION ${DATA_INSTALL_DIR}/kdevswitchviewer )
+install( FILES kdevmovesplitview.desktop DESTINATION ${SERVICES_INSTALL_DIR} )
+install( FILES kdevmovesplitview.rc DESTINATION ${DATA_INSTALL_DIR}/kdevmovesplitview )

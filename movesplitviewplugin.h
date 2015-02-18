@@ -15,8 +15,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef SWITCHAREAPLUGIN_H
-#define SWITCHAREAPLUGIN_H
+#ifndef MOVESPLITVIEWPLUGIN_H
+#define MOVESPLITVIEWPLUGIN_H
 
 #include <kdevplatform/interfaces/iplugin.h>
 #include <QtCore/QVariant>
@@ -27,16 +27,17 @@ namespace Sublime{
 	class MainWindow;
 };
 
-class SwitchViewerPlugin: public KDevelop::IPlugin {
+class MoveSplitViewPluginImpl;
+
+class MoveSplitViewPlugin: public KDevelop::IPlugin {
 	Q_OBJECT
+	friend MoveSplitViewPluginImpl;
+
 public:
-	explicit SwitchViewerPlugin(QObject *parent, const QVariantList &args = QVariantList());
-	virtual ~SwitchViewerPlugin() {};
+	explicit MoveSplitViewPlugin(QObject *parent, const QVariantList &args = QVariantList());
+	virtual ~MoveSplitViewPlugin() {};
 
 public slots:
-	void nextArea() const;
-	void previousArea() const;
-
 	void moveViewInNextArea() const;
 	void moveViewInPreviousArea() const;
 
@@ -45,18 +46,6 @@ public slots:
 
 	void cleanView() const;
 	void cleanAllView() const;
-
-public:
-	//inline void areaSwitcher(bool forward = true) const;
-	//inline void moveAreaSwitcher(bool forward = true) const;
-
-private:
-	inline static Sublime::MainWindow* activeMainWindow();
-	static void switcher(bool forward, bool move, bool copy = false);
-	static void activateView(Sublime::MainWindow*, Sublime::AreaIndex*);
-	static void cleanView(bool all);
-
-private:
 };
 
 #endif
