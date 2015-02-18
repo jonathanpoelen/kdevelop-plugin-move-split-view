@@ -1,9 +1,7 @@
 kdevelop-plugin-view-switcher
 =============================
 
-To switch between the views of KDevelop (file splitter).
-
-The transition from one view to another is done in a loop, view the following is the first and last one before the first one is the last.
+Move and remove split views.
 
 Features
 --------
@@ -17,10 +15,10 @@ Features
 Dependencies
 ------------
 
-### Debian and derived
+Debian and derived
  - kdelibs5-dev
 
-### Other distros
+Other distros
  - kdelibs5-devel
 
 Install
