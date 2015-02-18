@@ -14,6 +14,15 @@ Features
  - Delete the views found in other split views
  - Moving a file from one split view to the other. Split if it is not already.
 
+Dependencies
+------------
+
+### Debian and derived
+ - kdelibs5-dev
+
+### Other distros
+ - kdelibs5-devel
+
 Install
 -------
 
@@ -31,15 +40,7 @@ sed -i 's/X\-KDevelop\-Version=[0-9][0-9]/X-KDevelop-Version=15/' kdevswitchview
 
 ### All versions
 
-```sh
-mkdir build
-cd build
-cmake .. -DCMAKE_INSTALL_PREFIX=$(kde4-config --prefix) -DQT_QMAKE_EXECUTABLE=/usr/bin/qmake-qt4
-make
-sudo make install
-```
-
-or
+As a user
 
 ```sh
 mkdir build
@@ -47,6 +48,18 @@ cd build
 cmake .. -DCMAKE_INSTALL_PREFIX=$(kde4-config --localprefix) -DQT_QMAKE_EXECUTABLE=/usr/bin/qmake-qt4
 make
 make install
+```
+
+or
+
+As root user
+
+```sh
+mkdir build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=$(kde4-config --prefix) -DQT_QMAKE_EXECUTABLE=/usr/bin/qmake-qt4
+make
+sudo make install
 ```
 
 Old repository
