@@ -39,7 +39,11 @@ K_EXPORT_PLUGIN(MoveSplitViewFactory(KAboutData(
   ki18n("MoveSplitView"),
   "0.7",
   ki18n("Move and clean split view"),
-  KAboutData::License_GPL
+  KAboutData::License_LGPL,
+  ki18n("Author: Jonathan Poelen"),
+  KLocalizedString(),
+  "https://github.com/jonathanpoelen/kdevelop-plugin-move-split-view",
+  "jonathan.poelen+kdevmovesplitviewplugin@gmail.com"
 )))
 
 MoveSplitViewPlugin::MoveSplitViewPlugin(QObject *parent, const QVariantList &args)
