@@ -10,6 +10,7 @@ X-KDE-Library=kdevmovesplitview
 X-KDE-PluginInfo-Name=kdevmovesplitview
 X-KDE-PluginInfo-Author=Jonathan Poelen
 X-KDE-PluginInfo-Email=jonathan.poelen@gmail.com
+X-KDE-PluginInfo-Website=https://github.com/jonathanpoelen/kdevelop-plugin-move-split-view
 X-KDE-PluginInfo-Version=0.7
 X-KDE-PluginInfo-License=LGPL
 X-KDE-PluginInfo-Category=Utilities
