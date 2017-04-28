@@ -1,0 +1,27 @@
+{
+  "GenericName": "MoveSplitView",
+  "GenericName[x-test]": "xxMoveSplitViewxx",
+  "KPlugin": {
+    "Authors": [
+      {
+        "Email": "jonathan.poelen@gmail.com",
+        "Name": "Jonathan Poelen",
+        "Name[x-test]": "xxJonathan Poelenxx"
+      }
+    ],
+    "Category": "Core",
+    "Description": "Move and clean split views",
+    "Description[fr]": "Déplacer et nettoyer les vues scindées",
+    "Description[x-test]": "xxMove and clean split viewxx",
+    "Icon": "kdevelop",
+    "Id": "kdevmovesplitview",
+    "License": "GPL",
+    "Name": "MoveSplitView",
+    "ServiceTypes": [
+      "KDevelop/Plugin"
+    ],
+    "Version": "1.0"
+  },
+  "X-KDevelop-Category": "Global",
+  "X-KDevelop-Mode": "GUI"
+}

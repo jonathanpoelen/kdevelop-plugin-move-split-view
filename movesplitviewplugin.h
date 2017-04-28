@@ -1,6 +1,4 @@
-/*
-* This file is part of KDevelop
-*
+/**
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
@@ -13,39 +11,21 @@
 *
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+* \author Jonathan Poelen <jonathan.poelen@gmail.com>
 */
 
-#ifndef MOVESPLITVIEWPLUGIN_H
-#define MOVESPLITVIEWPLUGIN_H
+#ifndef KDEV_MOVE_SPLIT_VIEW_PLUGIN_H
+#define KDEV_MOVE_SPLIT_VIEW_PLUGIN_H
 
 #include <kdevplatform/interfaces/iplugin.h>
 #include <QtCore/QVariant>
 
-namespace Sublime{
-	class MainWindow;
-	class AreaIndex;
-	class MainWindow;
-};
-
-class MoveSplitViewPluginImpl;
-
-class MoveSplitViewPlugin: public KDevelop::IPlugin {
+class KDevMoveSplitViewPlugin: public KDevelop::IPlugin {
 	Q_OBJECT
-	friend MoveSplitViewPluginImpl;
-
 public:
-	explicit MoveSplitViewPlugin(QObject *parent, const QVariantList &args = QVariantList());
-	virtual ~MoveSplitViewPlugin() {};
-
-public slots:
-	void moveViewInNextArea() const;
-	void moveViewInPreviousArea() const;
-
-	void copyViewInNextArea() const;
-	void copyViewInPreviousArea() const;
-
-	void cleanView() const;
-	void cleanAllView() const;
+	explicit KDevMoveSplitViewPlugin(QObject *parent, const QVariantList &args = QVariantList());
+	virtual ~KDevMoveSplitViewPlugin();
 };
 
 #endif

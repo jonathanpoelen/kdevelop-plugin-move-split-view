@@ -1,6 +1,4 @@
-/*
-* This file is part of KDevelop
-*
+/**
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
@@ -13,13 +11,14 @@
 *
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+* \author Jonathan Poelen <jonathan.poelen@gmail.com>
 */
 
 #include "movesplitviewplugin.h"
 
 #include <kpluginfactory.h>
 #include <kactioncollection.h>
-#include <kaction.h>
 #include <klocale.h>
 #include <kaboutdata.h>
 
@@ -32,73 +31,79 @@
 #include <sublime/view.h>
 #include <sublime/document.h>
 
-K_PLUGIN_FACTORY(MoveSplitViewFactory, registerPlugin<MoveSplitViewPlugin>();)
-K_EXPORT_PLUGIN(MoveSplitViewFactory(KAboutData(
-  "kdevmovesplitview",
-  "kdevmovesplitview",
-  ki18n("MoveSplitView"),
-  "0.7",
-  ki18n("Move and clean split view"),
-  KAboutData::License_LGPL,
-  ki18n("Author: Jonathan Poelen"),
-  KLocalizedString(),
-  "https://github.com/jonathanpoelen/kdevelop-plugin-move-split-view",
-  "jonathan.poelen+kdevmovesplitviewplugin@gmail.com"
-)))
 
-MoveSplitViewPlugin::MoveSplitViewPlugin(QObject *parent, const QVariantList &args)
-:KDevelop::IPlugin(MoveSplitViewFactory::componentData(), parent)
+K_PLUGIN_FACTORY_WITH_JSON(MoveSplitViewFactory, "kdevmovesplitview.json", registerPlugin<KDevMoveSplitViewPlugin>();)
+
+namespace
 {
-	Q_UNUSED(args);
+  void nextView(bool next, bool copy);
+  void cleanView(bool all);
+};
 
-	KAction* action;
-
-	action = actionCollection()->addAction("move_previous_split_view");
-	action->setText(i18n("Move Split View In Previous Split View"));
-	action->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_Left);
-	connect(action, SIGNAL(triggered()), SLOT(moveViewInPreviousArea()));
-
-	action = actionCollection()->addAction("move_next_split_view");
-	action->setText(i18n("Move Split View In Next Split View"));
-	action->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_Right);
-	connect(action, SIGNAL(triggered()), SLOT(moveViewInNextArea()));
-
-	action = actionCollection()->addAction("copy_previous_split_view");
-	action->setText(i18n("Copy Split View In Previous Split View"));
-	action->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::ALT + Qt::Key_Left);
-	connect(action, SIGNAL(triggered()), SLOT(copyViewInPreviousArea()));
-
-	action = actionCollection()->addAction("copy_next_split_view");
-	action->setText(i18n("Copy Split View In Next Split View"));
-	action->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::ALT + Qt::Key_Right);
-	connect(action, SIGNAL(triggered()), SLOT(copyViewInNextArea()));
-
-	action = actionCollection()->addAction("clean_split_view");
-	action->setText(i18n("Clean Split View"));
-	connect(action, SIGNAL(triggered()), SLOT(cleanView()));
-
-	action = actionCollection()->addAction("clean_all_split_view");
-	action->setText(i18n("Clean All Split View"));
-	connect(action, SIGNAL(triggered()), SLOT(cleanAllView()));
-
+KDevMoveSplitViewPlugin::KDevMoveSplitViewPlugin(QObject *parent, const QVariantList &)
+:KDevelop::IPlugin("kdevmovesplitview", parent)
+{
 	setXMLFile("kdevmovesplitview.rc");
+
+	auto ac = actionCollection();
+	auto add_action = [ac,this](QString name, char const * desc, auto act){
+    QAction* action = ac->addAction(qMove(name));
+    action->setText(i18n(desc));
+    connect(action, &QAction::triggered, this, act);
+    return action;
+  };
+
+  ac->setDefaultShortcut(add_action(
+    QStringLiteral("move_previous_split_view"),
+    "Move Split View In Previous Split View",
+    []{ nextView(false, false); }
+  ), Qt::CTRL + Qt::ALT + Qt::Key_Left);
+
+  ac->setDefaultShortcut(add_action(
+    QStringLiteral("move_next_split_view"),
+    "Move Split View In Next Split View",
+    []{ nextView(true, false); }
+  ), Qt::CTRL + Qt::ALT + Qt::Key_Right);
+
+  ac->setDefaultShortcut(add_action(
+    QStringLiteral("copy_previous_split_view"),
+    "Copy Split View In Previous Split View",
+    []{ nextView(false, true); }
+  ), Qt::CTRL + Qt::SHIFT + Qt::ALT + Qt::Key_Left);
+
+  ac->setDefaultShortcut(add_action(
+    QStringLiteral("copy_next_split_view"),
+    "Copy Split View In Next Split View",
+    []{ nextView(true, true); }
+  ), Qt::CTRL + Qt::SHIFT + Qt::ALT + Qt::Key_Right);
+
+	add_action(
+   QStringLiteral("clean_split_view"),
+   "Clean Split View",
+   []{ cleanView(false); }
+  );
+
+  add_action(
+    QStringLiteral("clean_all_split_view"),
+    "Clean All Split View",
+    []{ cleanView(true); }
+  );
 }
 
-struct MoveSplitViewPluginImpl
-{
-  inline static Sublime::MainWindow* activeMainWindow()
-  {
-    Sublime::MainWindow* window = qobject_cast<Sublime::MainWindow*>(
-      KDevelop::ICore::self()->uiController()->activeMainWindow()
-    );
+KDevMoveSplitViewPlugin::~KDevMoveSplitViewPlugin() = default;
 
-    if (!window || !window->area() || !window->area()->activeView()) {
-      return nullptr;
-    }
-    return window;
+#include <kdevplatform/shell/core.h>
+#include <kdevplatform/shell/uicontroller.h>
+namespace
+{
+  Sublime::MainWindow* activeMainWindow()
+  {
+    auto ui = KDevelop::ICore::self()->uiController();
+    return ui ? qobject_cast<Sublime::MainWindow*>(ui->activeMainWindow()) : nullptr;
   }
 
-  inline static void switcher(bool forward, bool copy)
+  // inspired by kdevplatform/shell/mainwindow_actions.cpp
+  void nextView(bool next, bool copy)
   {
     Sublime::MainWindow* window = activeMainWindow();
     if (!window) {
@@ -106,69 +111,64 @@ struct MoveSplitViewPluginImpl
     }
 
     Sublime::Area* area = window->area();
-    Sublime::View* activeView = area->activeView();
-    Sublime::AreaIndex* areaindex = area->indexOf(activeView);
-    if (areaindex && areaindex->parent()) {
-      if (forward) {
-        if (areaindex->parent()->second() == areaindex) {
-          do {
-            areaindex = areaindex->parent();
-          } while (areaindex->parent() && areaindex->parent()->second() == areaindex);
-          areaindex = areaindex->parent();
-          areaindex = areaindex ? areaindex->second() : area->rootIndex();
-        } else {
-          areaindex = areaindex->parent()->second();
-        }
-        while (areaindex->isSplit()) {
-          areaindex = areaindex->first();
-        }
-      } else {
-        if (areaindex->parent()->first() == areaindex) {
-          do {
-            areaindex = areaindex->parent();
-          } while (areaindex->parent() && areaindex->parent()->first() == areaindex);
-          areaindex = areaindex->parent();
-          areaindex = areaindex ? areaindex->first() : area->rootIndex();
-        } else {
-          areaindex = areaindex->parent()->first();
-        }
-        while (areaindex->isSplit()) {
-          areaindex = areaindex->second();
-        }
-      }
+    if (!area) {
+      return;
+    }
 
+    Sublime::View* activeView = window->activeView();
+    if (!activeView) {
+      return;
+    }
+
+    QList<Sublime::View*> topViews = window->getTopViews();
+    if (topViews.count() <= 0) {
+      return;
+    }
+
+    if (topViews.count() == 1) {
+      area->addView(activeView->document()->createView(), activeView, Qt::Horizontal);
+    }
+    else {
       auto doc_controller = KDevelop::ICore::self()->documentController();
       KDevelop::IDocument* doc = doc_controller->activeDocument();
-      if (doc) {
-        for (auto view : areaindex->views()) {
-          if (view->hasWidget() && view->widget()->isVisible()) {
-            window->activateView(view);
-            break;
-          }
-        }
-        doc_controller->openDocument(doc);
-        if (!copy) {
-          delete area->removeView(activeView);
-        }
+
+      if (!doc) {
+        return;
       }
-    } else if (areaindex->viewCount() > 1) {
-      area->addView(activeView->document()->createView(), activeView, Qt::Horizontal);
-      if (!copy) {
-        delete area->removeView(activeView);
+
+      int viewIndex = topViews.indexOf(activeView);
+      viewIndex += next ? 1 : -1;
+
+      if (viewIndex < 0) {
+        viewIndex = topViews.count() - 1;
       }
+      else if (viewIndex >= topViews.count()) {
+        viewIndex = 0;
+      }
+
+      window->activateView(topViews.at(viewIndex));
+      doc_controller->openDocument(doc);
+    }
+
+    if (!copy) {
+      delete area->removeView(activeView);
     }
   }
 
-  inline static void cleanView(bool all)
+  void cleanView(bool all)
   {
     Sublime::MainWindow* window = activeMainWindow();
     if (!window) {
+      return;
+    }
+
+    Sublime::Area* area = window->area();
+    if (!area) {
       return;
     }
 
     typedef QList<Sublime::View*> QListView;
     typedef QListView::iterator ListIterator;
-    Sublime::Area* area = window->area();
     QListView views = area->views();
     QListView removed;
 
@@ -197,38 +197,6 @@ struct MoveSplitViewPluginImpl
       delete area->removeView(view);
     }
   }
-};
-
-
-void MoveSplitViewPlugin::moveViewInNextArea() const
-{
-	MoveSplitViewPluginImpl::switcher(true, false);
 }
-
-void MoveSplitViewPlugin::moveViewInPreviousArea() const
-{
-	MoveSplitViewPluginImpl::switcher(false, false);
-}
-
-void MoveSplitViewPlugin::copyViewInNextArea() const
-{
-	MoveSplitViewPluginImpl::switcher(true, true);
-}
-
-void MoveSplitViewPlugin::copyViewInPreviousArea() const
-{
-	MoveSplitViewPluginImpl::switcher(false, true);
-}
-
-void MoveSplitViewPlugin::cleanAllView() const
-{
-	MoveSplitViewPluginImpl::cleanView(true);
-}
-
-void MoveSplitViewPlugin::cleanView() const
-{
-	MoveSplitViewPluginImpl::cleanView(false);
-}
-
 
 #include "movesplitviewplugin.moc"
