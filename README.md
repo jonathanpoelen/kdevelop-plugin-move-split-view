@@ -16,7 +16,7 @@ Move and clean split views.
 - clang++ or g++ with c++14 support
 
 ```
-sudo apt cmake cmake-extras kdevplatform-dev kdelibs5-dev
+sudo apt cmake cmake-extras kdelibs5-dev
 ```
 
 ## Install
@@ -26,7 +26,7 @@ sudo apt cmake cmake-extras kdevplatform-dev kdelibs5-dev
 ```
 mkdir build
 cd build
-cmake -DPLUGIN_INSTALL_DIR=/usr/lib/x86_64-linux-gnu/qt5/plugins/ ..
+cmake -DPLUGIN_INSTALL_DIR=/usr/lib/x86_64-linux-gnu/qt5/plugins/ -DCMAKE_BUILD_TYPE=Release ..
 make
 sudo make install
 ```
