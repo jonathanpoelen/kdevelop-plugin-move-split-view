@@ -126,7 +126,9 @@ namespace
     }
 
     if (topViews.count() == 1) {
-      area->addView(activeView->document()->createView(), activeView, Qt::Horizontal);
+      auto newView = activeView->document()->createView();
+      area->addView(newView, activeView, Qt::Horizontal);
+      window->activateView(activeView);
     }
     else {
       auto doc_controller = KDevelop::ICore::self()->documentController();
