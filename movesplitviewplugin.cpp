@@ -41,50 +41,57 @@ namespace
 };
 
 KDevMoveSplitViewPlugin::KDevMoveSplitViewPlugin(QObject *parent, const QVariantList &)
-:KDevelop::IPlugin("kdevmovesplitview", parent)
+:KDevelop::IPlugin(QStringLiteral("kdevmovesplitview"), parent)
 {
-	setXMLFile("kdevmovesplitview.rc");
+  setXMLFile(QStringLiteral("kdevmovesplitview.rc"));
 
-	auto ac = actionCollection();
-	auto add_action = [ac,this](QString name, char const * desc, auto act){
-    QAction* action = ac->addAction(qMove(name));
+  auto ac = actionCollection();
+  auto add_action = [ac,this](QString&& name, QString&& icon, char const * desc, auto act){
+    QAction* action = ac->addAction(name);
     action->setText(i18n(desc));
+    action->setIcon(QIcon::fromTheme(icon));
     connect(action, &QAction::triggered, this, act);
     return action;
   };
 
   ac->setDefaultShortcut(add_action(
     QStringLiteral("move_previous_split_view"),
+    QStringLiteral("arrow-left"),
     "Move Split View In Previous Split View",
     []{ nextView(false, false); }
   ), Qt::CTRL + Qt::ALT + Qt::Key_Left);
 
   ac->setDefaultShortcut(add_action(
     QStringLiteral("move_next_split_view"),
+    QStringLiteral("arrow-right"),
     "Move Split View In Next Split View",
     []{ nextView(true, false); }
   ), Qt::CTRL + Qt::ALT + Qt::Key_Right);
 
   ac->setDefaultShortcut(add_action(
     QStringLiteral("copy_previous_split_view"),
+    QStringLiteral("arrow-left-double"),
     "Copy Split View In Previous Split View",
     []{ nextView(false, true); }
   ), Qt::CTRL + Qt::SHIFT + Qt::ALT + Qt::Key_Left);
 
   ac->setDefaultShortcut(add_action(
     QStringLiteral("copy_next_split_view"),
+    QStringLiteral("arrow-right-double"),
     "Copy Split View In Next Split View",
     []{ nextView(true, true); }
   ), Qt::CTRL + Qt::SHIFT + Qt::ALT + Qt::Key_Right);
 
-	add_action(
-   QStringLiteral("clean_split_view"),
-   "Clean Split View",
-   []{ cleanView(false); }
+  add_action(
+    QStringLiteral("clean_split_view"),
+    QStringLiteral("view-close"),
+    "Clean Split View",
+    []{ cleanView(false); }
   );
 
   add_action(
     QStringLiteral("clean_all_split_view"),
+    QStringLiteral("view-close"),
     "Clean All Split View",
     []{ cleanView(true); }
   );

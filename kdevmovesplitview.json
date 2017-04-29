@@ -9,11 +9,11 @@
         "Name[x-test]": "xxJonathan Poelenxx"
       }
     ],
-    "Category": "Core",
+    "Category": "Utilities",
     "Description": "Move and clean split views",
-    "Description[fr]": "Déplacer et nettoyer les vues scindées",
+    "Description[fr]": "Déplace et nettoie les vues scindées",
     "Description[x-test]": "xxMove and clean split viewxx",
-    "Icon": "kdevelop",
+    "Icon": "split",
     "Id": "kdevmovesplitview",
     "License": "GPL",
     "Name": "MoveSplitView",

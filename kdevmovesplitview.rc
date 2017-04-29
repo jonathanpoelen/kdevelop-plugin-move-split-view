@@ -1,8 +1,8 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
 <kpartgui name="kdevmovesplitview" version="7">
 <MenuBar>
-  <Menu name="view">
-    <text context="@title:menu">View</text>
+  <Menu name="window">
+    <text context="@title:menu">Window</text>
     <Menu name="view">
       <text context="@title:menu">Split View</text>
       <separator />
@@ -13,8 +13,8 @@
       <separator />
       <Action name="clean_split_view" />
       <Action name="clean_all_split_view" />
-      <separator />
     </Menu>
+    <separator />
   </Menu>
 </MenuBar>
 </kpartgui>
