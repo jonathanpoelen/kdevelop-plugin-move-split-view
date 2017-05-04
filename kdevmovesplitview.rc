@@ -1,11 +1,11 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
-<kpartgui name="kdevmovesplitview" version="7">
+<kpartgui name="kdevmovesplitview" version="8">
 <MenuBar>
   <Menu name="window">
     <text context="@title:menu">Window</text>
-    <Menu name="view">
-      <text context="@title:menu">Split View</text>
-      <separator />
+<!--     <Menu name="view"> -->
+<!--       <text context="@title:menu">Split View</text> -->
+<!--       <separator /> -->
       <Action name="move_previous_split_view" />
       <Action name="move_next_split_view" />
       <Action name="copy_previous_split_view" />
@@ -13,7 +13,7 @@
       <separator />
       <Action name="clean_split_view" />
       <Action name="clean_all_split_view" />
-    </Menu>
+<!--     </Menu> -->
     <separator />
   </Menu>
 </MenuBar>
