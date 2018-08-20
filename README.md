@@ -12,11 +12,11 @@ Move and clean split views.
 - cmake
 - cmake-extras
 - kdelibs5-dev or kdelibs5-devel
-<!-- - kdevplatform-dev -->
+- kdevplatform-dev
 - clang++ or g++ with c++14 support
 
 ```
-sudo apt install cmake cmake-extras kdelibs5-dev
+sudo apt install cmake cmake-extras kdelibs5-dev kdevplatform-dev
 ```
 
 ## Install
