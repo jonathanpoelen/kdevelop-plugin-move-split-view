@@ -19,7 +19,7 @@
 
 #include <kpluginfactory.h>
 #include <kactioncollection.h>
-#include <klocale.h>
+#include <klocalizedstring.h>
 #include <kaboutdata.h>
 
 #include <interfaces/icore.h>
@@ -57,28 +57,28 @@ KDevMoveSplitViewPlugin::KDevMoveSplitViewPlugin(QObject *parent, const QVariant
   ac->setDefaultShortcut(addAction(
     QStringLiteral("move_previous_split_view"),
     QStringLiteral("arrow-left"),
-    "Move Window In Previous Split View",
+    "Move Window To Previous Split View",
     []{ nextView(false, false); }
   ), Qt::CTRL + Qt::ALT + Qt::Key_Left);
 
   ac->setDefaultShortcut(addAction(
     QStringLiteral("move_next_split_view"),
     QStringLiteral("arrow-right"),
-    "Move Window In Next Split View",
+    "Move Window To Next Split View",
     []{ nextView(true, false); }
   ), Qt::CTRL + Qt::ALT + Qt::Key_Right);
 
   ac->setDefaultShortcut(addAction(
     QStringLiteral("copy_previous_split_view"),
     QStringLiteral("arrow-left-double"),
-    "Copy Window In Previous Split View",
+    "Copy Window To Previous Split View",
     []{ nextView(false, true); }
   ), Qt::CTRL + Qt::SHIFT + Qt::ALT + Qt::Key_Left);
 
   ac->setDefaultShortcut(addAction(
     QStringLiteral("copy_next_split_view"),
     QStringLiteral("arrow-right-double"),
-    "Copy Window In Next Split View",
+    "Copy Window To Next Split View",
     []{ nextView(true, true); }
   ), Qt::CTRL + Qt::SHIFT + Qt::ALT + Qt::Key_Right);
 
@@ -127,7 +127,7 @@ namespace
       return;
     }
 
-    QList<Sublime::View*> topViews = window->getTopViews();
+    QList<Sublime::View*> topViews = window->topViews();
     if (topViews.count() <= 0) {
       return;
     }

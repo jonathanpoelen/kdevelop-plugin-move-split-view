@@ -9,28 +9,24 @@ Move and clean split views.
 
 ## Dependencies
 
-- cmake
-- cmake-extras
-- kdelibs5-dev or kdelibs5-devel
-- kdevplatform-dev
-- clang++ or g++ with c++14 support
+- `cmake`
+- `extra-cmake-modules`
+- `gettext`
+- `kdelibs5-dev` or `kdelibs5-devel`
+<!-- - kdevplatform-dev -->
 
 ```
-sudo apt install cmake cmake-extras kdelibs5-dev kdevplatform-dev
+sudo apt install cmake extra-cmake-modules gettext kdelibs5-dev
 ```
 
 ## Install
 
-### KDevelop5
-
 ```
 mkdir build
 cd build
-cmake -DPLUGIN_INSTALL_DIR=/usr/lib/x86_64-linux-gnu/qt5/plugins/ -DCMAKE_BUILD_TYPE=Release ..
+cmake -DPLUGIN_INSTALL_DIR=/usr/lib/qt/plugins/ -DCMAKE_BUILD_TYPE=Release ..
 make
 sudo make install
 ```
 
-### KDevelop4
-
-https://github.com/jonathanpoelen/kdevelop-plugin-move-split-view/releases/tag/kdev4-v0.7
+Note: Change the value of `PLUGIN INSTALL_DIR` by the path of your qt plugins. For example `/usr/lib/x86_64-linux-gnu/qt5/plugins/` if `/usr/lib/qt/plugins/` does not exist.
