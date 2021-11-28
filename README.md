@@ -22,11 +22,9 @@ sudo apt install cmake extra-cmake-modules gettext kdelibs5-dev
 ## Install
 
 ```
-mkdir build
-cd build
-cmake -DCMAKE_BUILD_TYPE=Release ..
-make
-sudo make install
+cmake -DCMAKE_BUILD_TYPE=Release -B build
+cmake --build build
+sudo cmake --build build install
 ```
 
 Note: It may be necessary to add `-DPLUGIN_INSTALL_DIR=${your_path}` with `cmake`. For example `/usr/lib/qt/plugins/` or `/usr/lib/x86_64-linux-gnu/qt5/plugins/`.
