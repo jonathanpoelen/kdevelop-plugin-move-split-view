@@ -32,7 +32,7 @@
 #include <sublime/document.h>
 
 
-K_PLUGIN_FACTORY_WITH_JSON(MoveSplitViewFactory, "kdevmovesplitview.json", registerPlugin<KDevMoveSplitViewPlugin>();)
+K_PLUGIN_FACTORY_WITH_JSON(MoveSplitViewFactory, "kdevmovesplitview.json", registerPlugin<MoveSplitViewPlugin>();)
 
 namespace
 {
@@ -40,8 +40,8 @@ namespace
   void cleanView(bool all);
 };
 
-KDevMoveSplitViewPlugin::KDevMoveSplitViewPlugin(QObject *parent, const QVariantList &)
-:KDevelop::IPlugin(QStringLiteral("kdevmovesplitview"), parent)
+MoveSplitViewPlugin::MoveSplitViewPlugin(QObject* parent, const KPluginMetaData& metaData, const QVariantList& /*args*/)
+  :KDevelop::IPlugin(QStringLiteral("kdevmovesplitview"), parent, metaData)
 {
   setXMLFile(QStringLiteral("kdevmovesplitview.rc"));
 
@@ -59,28 +59,28 @@ KDevMoveSplitViewPlugin::KDevMoveSplitViewPlugin(QObject *parent, const QVariant
     QStringLiteral("arrow-left"),
     "Move Window To Previous Split View",
     []{ nextView(false, false); }
-  ), Qt::CTRL + Qt::ALT + Qt::Key_Left);
+  ), Qt::CTRL | Qt::ALT | Qt::Key_Left);
 
   ac->setDefaultShortcut(addAction(
     QStringLiteral("move_next_split_view"),
     QStringLiteral("arrow-right"),
     "Move Window To Next Split View",
     []{ nextView(true, false); }
-  ), Qt::CTRL + Qt::ALT + Qt::Key_Right);
+  ), Qt::CTRL | Qt::ALT | Qt::Key_Right);
 
   ac->setDefaultShortcut(addAction(
     QStringLiteral("copy_previous_split_view"),
     QStringLiteral("arrow-left-double"),
     "Copy Window To Previous Split View",
     []{ nextView(false, true); }
-  ), Qt::CTRL + Qt::SHIFT + Qt::ALT + Qt::Key_Left);
+  ), Qt::CTRL | Qt::SHIFT | Qt::ALT | Qt::Key_Left);
 
   ac->setDefaultShortcut(addAction(
     QStringLiteral("copy_next_split_view"),
     QStringLiteral("arrow-right-double"),
     "Copy Window To Next Split View",
     []{ nextView(true, true); }
-  ), Qt::CTRL + Qt::SHIFT + Qt::ALT + Qt::Key_Right);
+  ), Qt::CTRL | Qt::SHIFT | Qt::ALT | Qt::Key_Right);
 
   addAction(
     QStringLiteral("clean_split_view"),
@@ -97,7 +97,7 @@ KDevMoveSplitViewPlugin::KDevMoveSplitViewPlugin(QObject *parent, const QVariant
   );
 }
 
-KDevMoveSplitViewPlugin::~KDevMoveSplitViewPlugin() = default;
+MoveSplitViewPlugin::~MoveSplitViewPlugin() = default;
 
 #include <kdevplatform/shell/core.h>
 #include <kdevplatform/shell/uicontroller.h>
@@ -209,3 +209,4 @@ namespace
 }
 
 #include "movesplitviewplugin.moc"
+#include "moc_movesplitviewplugin.cpp"

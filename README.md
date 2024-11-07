@@ -12,7 +12,7 @@ Move and clean split views.
 - `cmake`
 - `extra-cmake-modules`
 - `gettext`
-- `kdelibs5-dev` or `kdelibs5-devel`
+- `kdelibs6-dev` or `kdelibs6-devel`
 <!-- - kdevplatform-dev -->
 
 ```
@@ -27,4 +27,4 @@ cmake --build build
 sudo cmake --build build install
 ```
 
-Note: It may be necessary to add `-DPLUGIN_INSTALL_DIR=${your_path}` with `cmake`. For example `/usr/lib/qt/plugins/` or `/usr/lib/x86_64-linux-gnu/qt5/plugins/`.
+Note: It may be necessary to add `-DPLUGIN_INSTALL_DIR=${your_path}` with `cmake`. For example `/usr/lib/qt6/plugins/` or `/usr/lib/x86_64-linux-gnu/qt6/plugins/`.

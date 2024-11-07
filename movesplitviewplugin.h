@@ -15,17 +15,17 @@
 * \author Jonathan Poelen <jonathan.poelen@gmail.com>
 */
 
-#ifndef KDEV_MOVE_SPLIT_VIEW_PLUGIN_H
-#define KDEV_MOVE_SPLIT_VIEW_PLUGIN_H
+#ifndef MOVE_SPLIT_VIEW_PLUGIN_H
+#define MOVE_SPLIT_VIEW_PLUGIN_H
 
 #include <kdevplatform/interfaces/iplugin.h>
-#include <QtCore/QVariant>
 
-class KDevMoveSplitViewPlugin: public KDevelop::IPlugin {
+class MoveSplitViewPlugin : public KDevelop::IPlugin
+{
 	Q_OBJECT
 public:
-	explicit KDevMoveSplitViewPlugin(QObject *parent, const QVariantList &args = QVariantList());
-	virtual ~KDevMoveSplitViewPlugin();
+	explicit MoveSplitViewPlugin(QObject* parent, const KPluginMetaData& metaData, const QVariantList& args);
+	~MoveSplitViewPlugin();
 };
 
 #endif

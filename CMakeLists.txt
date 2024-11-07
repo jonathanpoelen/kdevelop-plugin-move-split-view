@@ -1,40 +1,49 @@
-project(kdevmovesplitview)
+cmake_minimum_required(VERSION 3.0)
 
-cmake_minimum_required(VERSION 3.16.0)
-# apt install cmake-extras
-find_package (ECM 0.0.9 REQUIRED NO_MODULE)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH})
+project(kdevmovesplitview
+    HOMEPAGE_URL "https://github.com/jonathanpoelen/kdevelop-plugin-move-split-view"
+    DESCRIPTION "To switch between the views of KDevelop"
+    VERSION 2.0.0
+)
 
-include(KDECompilerSettings NO_POLICY_SCOPE)
-#include(ECMAddTests)
+find_package(ECM "6.0.0" REQUIRED NO_MODULE)
+set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
+
 include(KDEInstallDirs)
 include(KDECMakeSettings)
+include(KDECompilerSettings NO_POLICY_SCOPE)
+#include(ECMQtDeclareLoggingCategory)
+include(FeatureSummary)
 
-set(QT_MIN_VERSION "5.4.0")
-find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED Widgets)
-#find_package(Qt5 REQUIRED Core Widgets Test)
 
-set(KF5_DEP_VERSION "5.15.0") # pifometrie...
-find_package(KF5 ${KF5_DEP_VERSION} REQUIRED COMPONENTS
-  I18n
-  Service
+find_package(KF6 REQUIRED COMPONENTS I18n)  # fix for KDevPlatform package
+find_package(KDevPlatform 6.0.0 REQUIRED)
+
+#ecm_qt_install_logging_categories(
+#    EXPORT kdevmovesplitview
+#    FILE movesplitview.categories
+#    DESTINATION "${KDE_INSTALL_LOGGINGCATEGORIESDIR}"
+#)
+
+feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
+
+set(kdevmovesplitview_SRCS
+    movesplitviewplugin.cpp
 )
 
-find_package(KDevPlatform ${KDEVPLATFORM_VERSION} REQUIRED)
-
-set(CMAKE_CXX_STANDARD 14)
-
-set(kdevmovesplitview_PART_SRCS
-  movesplitviewplugin.cpp
-)
-
+#ecm_qt_declare_logging_category(kdevmovesplitview_SRCS
+#    HEADER debug.h
+#    IDENTIFIER PLUGIN_ZAZSA
+#    CATEGORY_NAME "kdevelop.plugins.movesplitviewplugin"
+#    DESCRIPTION "KDevelop plugin: movesplitviewplugin"
+#    EXPORT MOVESPLITVIEWPLUGIN
+#)
 
 kdevplatform_add_plugin(kdevmovesplitview
-    JSON kdevmovesplitview.json
-    SOURCES ${kdevmovesplitview_PART_SRCS}
+    SOURCES ${kdevmovesplitview_SRCS}
 )
 
 target_link_libraries(kdevmovesplitview
-  KDev::Interfaces
-  KDev::Sublime
+    KDev::Interfaces
+    KDev::Sublime
 )
