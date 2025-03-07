@@ -22,7 +22,7 @@ sudo apt install cmake extra-cmake-modules gettext kdelibs5-dev
 ## Install
 
 ```
-cmake -DCMAKE_BUILD_TYPE=Release -B build
+cmake -DQT_MAJOR_VERSION=6 -DCMAKE_BUILD_TYPE=Release -B build
 cmake --build build
 sudo cmake --build build install
 ```
